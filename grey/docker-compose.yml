@@ -41,7 +41,19 @@ services:
       - 12201:12201
       # GELF UDP
       - 12201:12201/udp
+
+      - 5555:5555
+      - 5555:5555/udp
     networks:
+      - observability
+  app:
+    build: 
+      context: .
+      dockerfile: dockerfile-py
+    volumes: 
+      - ./:/app
+    command: python app.py
+    networks: 
       - observability
 networks:
   observability:
