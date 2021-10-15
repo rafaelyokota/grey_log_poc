@@ -1,0 +1,23 @@
+filebeat:
+  prospectors:
+    - paths:
+        - /logs/calamp/*.log
+      input_type: log
+      document_type: app_error
+      scan_frequency: 10s
+
+output.elasticsearch:
+  hosts: "elasticsearch:9200"
+  username: "elastic"
+  password: "changeme"
+  indices:
+    - index: "filebeat2-%{[agent.version]}-%{+yyyy.MM.dd}"
+
+  setup.template.pattern: "filebeat2"
+  setup.template.name: "filebeat2-*"
+
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB
+  selectors: ["*"]
+  level: debug
